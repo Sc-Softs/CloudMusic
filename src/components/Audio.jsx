@@ -7,12 +7,12 @@ export default class Audio extends Component {
         this.handlePause = this.handlePause.bind(this);
         this.handlePlay = this.handlePlay.bind(this);
     }
-    handlePause(){
-        const {setPlaying} = this.props;
+    handlePause() {
+        const { setPlaying } = this.props;
         setPlaying(false);
     }
-    handlePlay(){
-        const {setPlaying} = this.props;
+    handlePlay() {
+        const { setPlaying } = this.props;
         setPlaying(true);
     }
     componentWillUpdate(nextProps, nextState, nextContext) {
@@ -22,15 +22,14 @@ export default class Audio extends Component {
 
         if (srcState !== src) this.setState({ src });
         if (play) {
-            if(audioRef.readyState !== audioRef.HAVE_ENOUGH_DATA)
-                audioRef.oncanplay=()=>audioRef.play();
-            else{
+            if (audioRef.readyState !== audioRef.HAVE_ENOUGH_DATA)
+                audioRef.oncanplay = () => audioRef.play();
+            else {
                 audioRef.play();
+                audioRef.oncanplay = null;
             }
-        }
-        else {
-            
-                audioRef.pause();
+        } else {
+            audioRef.pause();
         }
     }
     render() {

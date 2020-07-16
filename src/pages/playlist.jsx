@@ -15,9 +15,9 @@ const useStyles = makeStyles((theme) => ({
         overflow: "auto",
         marginTop: theme.spacing(1) * 0.5,
         position: "fixed",
-        "& li":{
-            display:"block"
-        }
+        "& li": {
+            display: "block",
+        },
     },
     fab: {
         margin: theme.spacing(2),
@@ -57,19 +57,21 @@ export default (props) => {
         width: deviceShouldShowList ? undefined : 375,
     };
     const fabClick = React.useMemo(
-        ()=>(() => setShouldShowList(!ShouldShowList))
-        , [ShouldShowList]
-    );
-    const closeList=React.useMemo(
-        ()=>(() =>
-                        !deviceShouldShowList &&
-                        setShouldShowList(!ShouldShowList)), 
-        [deviceShouldShowList, ShouldShowList]
-    );
-    const fabStyle =React.useMemo(
-        ()=> ({ display: !ShouldShowList ? "" : "none" }), 
+        () => () => setShouldShowList(!ShouldShowList),
         [ShouldShowList]
     );
+    const closeList = React.useMemo(
+        () => () => !deviceShouldShowList && setShouldShowList(!ShouldShowList),
+        [deviceShouldShowList, ShouldShowList]
+    );
+    const fabStyle = React.useMemo(
+        () => ({ display: !ShouldShowList ? "" : "none" }),
+        [ShouldShowList]
+    );
+
+    var playState = React.useState(false);
+    var srcState = React.useState("");
+
     return (
         <>
             <Fab
@@ -85,10 +87,12 @@ export default (props) => {
                 <SongList
                     id={id}
                     closeList={closeList}
+                    srcState={srcState}
+                    playState={playState}
                 ></SongList>
             </Box>
             <Box className={styles.playBarStyle}>
-                <PlayBar />
+                <PlayBar playState={playState} srcState={srcState} />
             </Box>
         </>
     );
