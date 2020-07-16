@@ -69,8 +69,7 @@ export default (props) => {
         [ShouldShowList]
     );
 
-    var playState = React.useState(false);
-    var srcState = React.useState("");
+    var { playState, srcState } = props;
 
     return (
         <>

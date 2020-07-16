@@ -11,7 +11,7 @@ function createSong({ id, name, singer, album }) {
 
 /**
  *
- * @param {number} idAlbum
+ * @param {number|string} idAlbum
  * @param {object} song use createSong first
  * @returns {boolean} is success
  */
@@ -19,6 +19,9 @@ function addSong(idAlbum, song) {
     if (!dataManager.exist(idAlbum)) return false;
     var songs = [];
     songs = JSON.parse(dataManager.get(idAlbum));
+    for (var i of songs) {
+        if (i.id === song.id) return false;
+    }
     songs.push(song);
     dataManager.set(idAlbum, JSON.stringify(songs));
     return true;
@@ -27,8 +30,8 @@ function addSong(idAlbum, song) {
 /**
  *
  *
- * @param {number} idAlbum
- * @param {number} idSong
+ * @param {number|string} idAlbum
+ * @param {number|string} idSong
  * @returns {boolean}
  */
 function delSong(idAlbum /*:number*/, idSong /*:number*/) {

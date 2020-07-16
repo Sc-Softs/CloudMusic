@@ -8,11 +8,14 @@ export default (props) => (
     <HashRouter>
         <Switch>
             {props.route.map((value, index) => {
+                const wrapComponent = (props_wrap) => (
+                    <value.component {...props_wrap} {...props.data} />
+                );
                 return (
                     <Route
                         path={value.path}
                         key={index}
-                        component={value.component}
+                        component={wrapComponent}
                     ></Route>
                 );
             })}

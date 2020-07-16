@@ -7,7 +7,7 @@ import {
     ListItem,
     ListItemText,
     ListItemAvatar,
-    ListItemAvatar as ListItemIcon,
+    /*ListItemAvatar*/ListItemSecondaryAction  as ListItemIcon,
     IconButton as Icon,
     Avatar,
     makeStyles,
@@ -21,7 +21,7 @@ import prototypes from "prop-types";
 import DeleteSong from "./DeleteSong";
 import { FixedSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { getSong } from "../apis/song";
+import { getSong, addSong, createSong } from "../apis/song";
 
 var memory = {};
 
@@ -63,6 +63,14 @@ const useStyle = makeStyles((theme) => ({
     listStyles: {
         overflow: "auto",
     },
+    deleteButton: {
+        "& button": {
+            zIndex: 2000,
+            position:"absolute", 
+            top:0, 
+            marginTop:"calc( (74px - 48px) / 2 )"
+        },
+    },
 }));
 
 function SongList(props) {
@@ -85,6 +93,9 @@ function SongList(props) {
         function (songID) {
             setSRC(getSong(songID));
             setPlaying(true);
+            window.nowPlayingId = songID;
+            const song = this;
+            addSong("default", song);
             setTimeout(closeList, 800);
         },
         // eslint-disable-next-line
@@ -117,6 +128,7 @@ function SongList(props) {
                                 const { index, style } = input;
                                 const value = songs[index];
                                 return (
+                                  <>
                                     <ListItem
                                         key={index}
                                         button
@@ -125,7 +137,7 @@ function SongList(props) {
                                             value,
                                             value.id
                                         )}
-                                        style={style}
+                                        style={{...style}}
                                     >
                                         <ListItemAvatar>
                                             <Avatar>
@@ -137,8 +149,14 @@ function SongList(props) {
                                             secondary={
                                                 value.singer + "," + value.album
                                             }
-                                        ></ListItemText>
-                                        <ListItemIcon style={{ minWidth: 48 }}>
+                                        >
+                                        </ListItemText>
+                                        
+                                        <ListItemIcon
+                              
+                                            className={styles.deleteButton}
+                                            style={{ minWidth: 48,top:style.top }}
+                                        >
                                             <Tooltip
                                                 title={
                                                     LangData["PlayList"][
@@ -147,7 +165,7 @@ function SongList(props) {
                                                 }
                                             >
                                                 <Icon
-                                                    edge={"end"}
+                                                    // edge={"end"}
                                                     onClick={
                                                         //React.useMemo(
                                                         //()=>(
@@ -169,6 +187,9 @@ function SongList(props) {
                                             </Tooltip>
                                         </ListItemIcon>
                                     </ListItem>
+                                    
+                                    </>
+                                    
                                 );
                             }}
                         </List>
