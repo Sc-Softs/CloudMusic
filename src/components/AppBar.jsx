@@ -66,8 +66,9 @@ const useStyle = makeStyles((theme) => ({
     },
 }));
 
-export default () => {
+export default (props) => {
     const styles = useStyle();
+    const { toggleDrawer } = props;
     const [ShowInput, setShowInput] = React.useState(false);
     return (
         <>
@@ -75,7 +76,9 @@ export default () => {
                 <Toolbar>
                     <IconButton
                         aria-label="Menu"
-                        onClick={() => {}}
+                        onClick={() => {
+                            toggleDrawer();
+                        }}
                         color={"inherit"}
                         title={LangData["AppBar"]["menu"]}
                         className={styles.menuButton}

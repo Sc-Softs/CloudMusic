@@ -4,6 +4,8 @@ import LangData from "./i18n/lang";
 import Router from "./components/Router.jsx";
 import Index from "./pages/index.jsx";
 import Search from "./pages/search.jsx";
+import PlayList from "./pages/playlist.jsx";
+import Drawer from "./components/Drawer";
 
 const router = [
     {
@@ -14,6 +16,10 @@ const router = [
         path: "/index",
         component: Index,
     },
+    {
+        path: "/playlist/:id",
+        component: PlayList,
+    },
 ];
 
 const redirect = {
@@ -22,9 +28,17 @@ const redirect = {
 };
 
 export default () => {
+    const [ShowDrawer, setShowDrawer] = React.useState(false);
+    const toggleDrawer = React.useMemo(()=>(
+            ()=>setShowDrawer(!ShowDrawer)
+        ), [ShowDrawer]);
     return (
         <>
-            <AppBar></AppBar>
+            <Drawer
+                show={ShowDrawer}
+                toggleDrawer={toggleDrawer}
+            ></Drawer>
+            <AppBar toggleDrawer={toggleDrawer}></AppBar>
             <Router route={router} redirect={redirect}></Router>
         </>
     );
