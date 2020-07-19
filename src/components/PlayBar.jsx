@@ -1,8 +1,9 @@
 import React from "react";
-import { Paper, makeStyles, Fab } from "@material-ui/core";
+import {Fab, makeStyles, Paper, Slider, Typography} from "@material-ui/core";
 import PlayIcon from "@material-ui/icons/PlayCircleFilled";
 import PauseIcon from "@material-ui/icons/PauseCircleFilled";
-
+import SkipNextIcon from '@material-ui/icons/SkipNext';
+import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 
 const useStyle = makeStyles((theme) => ({
     rootPaper: {
@@ -21,16 +22,68 @@ const useStyle = makeStyles((theme) => ({
             color: "black",
         },
     },
+    Separator: {
+        width: theme.spacing(1),
+        display: "inline-block"
+    }
 }));
+
+const Separator = (props) => <div className={props.class.Separator}/>;
+
+const useRangeStyles = makeStyles(
+    {
+        root: {
+            marginLeft: '25px',
+            width: '80%',
+            display: 'inline-block',
+            position: 'absolute',
+            top: 20
+        }
+    }
+);
+
+const RangeSlider =
+    (props) => {
+        const styles = useRangeStyles();
+        const {min, max, value, onChange, disabled} = props;
+        return (
+            <div className={styles.root}>
+                <Typography>
+
+                </Typography>
+                <Slider
+                    valueLabelDisplay={"auto"}
+                    min={min}
+                    max={max}
+                    onChange={
+                        onChange
+                    }
+                    value={value}
+                    valueLabelFormat={(v) => `${v}%`}
+                    disabled={disabled}
+
+                />
+            </div>);
+    };
 
 export default (props) => {
     const styles = useStyle();
     const [Playing, setPlaying] = props.playState;
-    const [SRC, setSRC] = props.srcState;
+    const [SRC,] = props.srcState;
+    const [Progress, setProgress] = props.progressState;
+    const [Value, setValue] = React.useState([Progress]);
     return (
         <>
-            
+
             <Paper variant={"outlined"} className={styles.rootPaper}>
+                <Fab
+                    color="primary"
+                    size={"small"}
+                    disabled={SRC === ""}
+                >
+                    {<SkipPreviousIcon/>}
+                </Fab>
+                <Separator class={styles}/>
                 <Fab
                     color={"secondary"}
                     variant={"round"}
@@ -40,8 +93,30 @@ export default (props) => {
                     }}
                     disabled={SRC === ""}
                 >
-                    {!Playing ? <PlayIcon /> : <PauseIcon />}
+                    {!Playing ? <PlayIcon/> : <PauseIcon/>}
                 </Fab>
+                <Separator class={styles}/>
+                <Fab
+                    color="primary"
+                    size={"small"}
+                    disabled={SRC === ""}
+                >
+                    {<SkipNextIcon/>}
+                </Fab>
+                <Separator
+                    class={styles}
+
+                />
+                <RangeSlider
+                    min={0}
+                    max={100}
+                    value={Value}
+                    onChange={(e, newValue) => {
+                        setValue(newValue);
+                        setProgress(newValue);
+                    }}
+                    disabled={SRC === ""}
+                />
             </Paper>
         </>
     );

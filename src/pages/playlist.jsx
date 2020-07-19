@@ -69,7 +69,7 @@ export default (props) => {
         [ShouldShowList]
     );
 
-    var { playState, srcState } = props;
+    var { playState, srcState,progressState } = props;
 
     return (
         <>
@@ -88,10 +88,10 @@ export default (props) => {
                     closeList={closeList}
                     srcState={srcState}
                     playState={playState}
-                ></SongList>
+                />
             </Box>
             <Box className={styles.playBarStyle}>
-                <PlayBar playState={playState} srcState={srcState} />
+                <PlayBar playState={playState} srcState={srcState} progressState={progressState} />
             </Box>
         </>
     );

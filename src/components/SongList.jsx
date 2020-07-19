@@ -21,7 +21,7 @@ import prototypes from "prop-types";
 import DeleteSong from "./DeleteSong";
 import { FixedSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { getSong, addSong, createSong } from "../apis/song";
+import { getSong, addSong } from "../apis/song";
 
 var memory = {};
 
@@ -61,7 +61,7 @@ const useStyle = makeStyles((theme) => ({
         borderBottom: "1px solid rgba(0,0,0,0.2)",
     },
     listStyles: {
-        overflow: "auto",
+        overflow: "hidden",
     },
     deleteButton: {
         "& button": {
@@ -86,8 +86,8 @@ function SongList(props) {
         return () => {};
     }, [DeleteDialogOpen]);
 
-    const [src, setSRC] = props.srcState;
-    const [playing, setPlaying] = props.playState;
+    const [, setSRC] = props.srcState;
+    const [, setPlaying] = props.playState;
 
     const ListItemClick = React.useCallback(
         function (songID) {

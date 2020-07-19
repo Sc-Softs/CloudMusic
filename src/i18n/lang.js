@@ -2,7 +2,9 @@
  * @param {object} obj
  * @returns {lang}
  */
-const defLang = (obj) => obj;
+const defLang = (obj) => {
+    return obj;
+};
 
 export default defLang({
     App: {

@@ -3,9 +3,11 @@ import React, { Component } from "react";
 export default class Audio extends Component {
     constructor(props) {
         super(props);
-        this.state = { src: props.src };
+        this.state = { src: props.src,progress:props.progressState[0]};
         this.handlePause = this.handlePause.bind(this);
         this.handlePlay = this.handlePlay.bind(this);
+        this.handleProgress = this.handleProgress.bind(this);
+        this.setProgress = props.progressState[1];
     }
     handlePause() {
         const { setPlaying } = this.props;
@@ -14,6 +16,11 @@ export default class Audio extends Component {
     handlePlay() {
         const { setPlaying } = this.props;
         setPlaying(true);
+    }
+    handleProgress(){
+        const {audioRef} = this;
+        const progress = Math.floor(audioRef.currentTime/audioRef.duration*100);
+        this.setProgress(progress);
     }
     componentWillUpdate(nextProps, nextState, nextContext) {
         const { src, play } = nextProps;
@@ -31,6 +38,10 @@ export default class Audio extends Component {
         } else {
             audioRef.pause();
         }
+        const progress = nextProps.progressState[0];
+        if(progress !== this.state.progress && !isNaN(progress)){
+            this.audioRef.currentTime = this.audioRef.duration * progress /100;
+        }
     }
     render() {
         return (
@@ -40,7 +51,8 @@ export default class Audio extends Component {
                 src={this.state["src"]}
                 onPause={this.handlePause}
                 onPlay={this.handlePlay}
-            ></audio>
+                onTimeUpdate={this.handleProgress}
+            />
         );
     }
 }

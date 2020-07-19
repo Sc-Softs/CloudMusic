@@ -31,22 +31,23 @@ const redirect = {
 
 export default () => {
     const [ShowDrawer, setShowDrawer] = React.useState(false);
-    var playState, srcState;
+    var playState, srcState,progressState;
     var [Playing, setPlaying] = (playState = React.useState(false));
     var [SRC] = (srcState = React.useState(""));
+    progressState = React.useState(0);//0-100
     const toggleDrawer = React.useMemo(() => () => setShowDrawer(!ShowDrawer), [
         ShowDrawer,
     ]);
     return (
         <>
-            <Audio play={Playing} src={SRC} setPlaying={setPlaying} />
-            <Drawer show={ShowDrawer} toggleDrawer={toggleDrawer}></Drawer>
-            <AppBar toggleDrawer={toggleDrawer}></AppBar>
+            <Audio play={Playing} src={SRC} setPlaying={setPlaying} progressState={progressState} />
+            <Drawer show={ShowDrawer} toggleDrawer={toggleDrawer}/>
+            <AppBar toggleDrawer={toggleDrawer}/>
             <Router
                 route={router}
                 redirect={redirect}
-                data={{ playState, srcState }}
-            ></Router>
+                data={{ playState, srcState,progressState }}
+            />
         </>
     );
 };
