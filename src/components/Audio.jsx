@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import PubSub from "pubsub-js";
+const  MESSAGE_SET_PROGRESS = "Message.Audio.SetProgress";
+export {MESSAGE_SET_PROGRESS};
 
 export default class Audio extends Component {
     constructor(props) {
@@ -13,6 +16,13 @@ export default class Audio extends Component {
             src: props.src,
             progress:this.currentTime
         };
+        PubSub.subscribe(
+            MESSAGE_SET_PROGRESS,
+            (message,data)=>{
+                    const currentTime = data;
+                    this.audioRef.currentTime = currentTime;
+                }
+            );
     }
     handlePause() {
         const { setPlaying } = this.props;
@@ -28,7 +38,7 @@ export default class Audio extends Component {
         this.setCurrentTime(progress);
         this.setTotalTime(audioRef.duration);
     }
-    componentWillUpdate(nextProps, nextState, nextContext) {
+    UNSAFE_componentWillUpdate(nextProps, nextState, nextContext) {
         const { src, play } = nextProps;
         const { audioRef } = this;
         const srcState = this.state.src;
@@ -45,10 +55,10 @@ export default class Audio extends Component {
             audioRef.pause();
             audioRef.oncanplay = null;
         }
-        const currentTime = nextProps.currentState[0];
-        if(currentTime !== this.state.progress && !isNaN(currentTime)){
-            this.audioRef.currentTime = currentTime;
-        }
+        // const currentTime = nextProps.currentState[0];
+        // if(currentTime !== this.state.progress && !isNaN(currentTime)){
+        //     this.audioRef.currentTime = currentTime;
+        // }
     }
     render() {
         return (

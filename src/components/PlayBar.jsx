@@ -4,6 +4,8 @@ import PlayIcon from "@material-ui/icons/PlayCircleFilled";
 import PauseIcon from "@material-ui/icons/PauseCircleFilled";
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
+import PubSub from "pubsub-js";
+import {MESSAGE_SET_PROGRESS} from "./Audio";
 
 const useStyle = makeStyles((theme) => ({
     rootPaper: {
@@ -71,7 +73,7 @@ export default (props) => {
     const styles = useStyle();
     const [Playing, setPlaying] = props.playState;
     const [SRC,] = props.srcState;
-    const [CurrentTime, setCurrentTime] = props.currentTimeState;
+    const [CurrentTime, /*setCurrentTime*/] = props.currentTimeState;
     const [TotalTime] = props.totalTimeState;
     const Value = Math.floor((CurrentTime / TotalTime) * 1000) / 10;
     return (
@@ -114,7 +116,9 @@ export default (props) => {
                     max={100}
                     value={Value}
                     onChange={(e, newValue) => {
-                        setCurrentTime(TotalTime * newValue / 100);
+                        //setCurrentTime(TotalTime * newValue / 100);
+                        const currentTime = TotalTime * newValue / 100;
+                        PubSub.publish(MESSAGE_SET_PROGRESS,currentTime);
                     }}
                     disabled={SRC === ""}
                 />

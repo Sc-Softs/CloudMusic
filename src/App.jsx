@@ -28,7 +28,7 @@ const redirect = {
     from: "/",
     to: "/index",
 };
-
+window.sharedStates = [];
 export default () => {
     const [ShowDrawer, setShowDrawer] = React.useState(false);
     var playState, srcState, currentTimeState, totalTimeState;
