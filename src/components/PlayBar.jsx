@@ -7,6 +7,12 @@ import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PubSub from "pubsub-js";
 import {MESSAGE_SET_PROGRESS} from "./Audio";
 
+
+const MESSAGE_SET_CURRENT_TIME = "Message.PlayBar.SetCurrentTime";
+const MESSAGE_SET_TOTAL_TIME = "Message.PlayBar.SetTotalTime";
+export {MESSAGE_SET_CURRENT_TIME,MESSAGE_SET_TOTAL_TIME};
+
+
 const useStyle = makeStyles((theme) => ({
     rootPaper: {
         position: "relative",
@@ -73,9 +79,27 @@ export default (props) => {
     const styles = useStyle();
     const [Playing, setPlaying] = props.playState;
     const [SRC,] = props.srcState;
-    const [CurrentTime, /*setCurrentTime*/] = props.currentTimeState;
-    const [TotalTime] = props.totalTimeState;
-    const Value = Math.floor((CurrentTime / TotalTime) * 1000) / 10;
+    //const [CurrentTime, /*setCurrentTime*/] = props.currentTimeState;
+    //const [TotalTime] = props.totalTimeState;
+    const [currentTime,setCurrentTime] = React.useState(0);
+    const [totalTime,setTotalTime] = React.useState(0);
+    React.useEffect(
+        ()=>{
+            PubSub.subscribe(
+                MESSAGE_SET_TOTAL_TIME,
+                (msg,data)=>{
+                    setTotalTime(data);
+                }
+            );
+            PubSub.subscribe(
+                MESSAGE_SET_CURRENT_TIME,
+                (msg,data)=>{
+                    setCurrentTime(data);
+                }
+            )
+        },[setCurrentTime,setTotalTime]
+    );
+    const Value = Math.floor((currentTime / totalTime) * 1000) / 10;
     return (
         <>
 
@@ -117,7 +141,7 @@ export default (props) => {
                     value={Value}
                     onChange={(e, newValue) => {
                         //setCurrentTime(TotalTime * newValue / 100);
-                        const currentTime = TotalTime * newValue / 100;
+                        const currentTime = totalTime * newValue / 100;
                         PubSub.publish(MESSAGE_SET_PROGRESS,currentTime);
                     }}
                     disabled={SRC === ""}

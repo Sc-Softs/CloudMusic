@@ -72,8 +72,8 @@ export default (props) => {
     var {
         playState,
         srcState,
-        currentTimeState,
-        totalTimeState
+        //currentTimeState,
+        //totalTimeState
     } = props;
 
     return (
@@ -99,8 +99,8 @@ export default (props) => {
                 <PlayBar
                     playState={playState}
                     srcState={srcState}
-                    currentTimeState={currentTimeState}
-                    totalTimeState={totalTimeState}
+                    //currentTimeState={currentTimeState}
+                    //totalTimeState={totalTimeState}
                 />
             </Box>
         </>

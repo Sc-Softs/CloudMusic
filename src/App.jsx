@@ -28,15 +28,17 @@ const redirect = {
     from: "/",
     to: "/index",
 };
+
 window.sharedStates = [];
+
 export default () => {
     const [ShowDrawer, setShowDrawer] = React.useState(false);
-    var playState, srcState, currentTimeState, totalTimeState;
+    var playState, srcState;//, currentTimeState, totalTimeState;
     var [Playing, setPlaying] = (playState = React.useState(false));
     var [SRC] = (srcState = React.useState(""));
 
-    currentTimeState = React.useState(0);
-    totalTimeState = React.useState(0);
+    //currentTimeState = React.useState(0);
+    //totalTimeState = React.useState(0);
 
     const toggleDrawer = React.useMemo(() => () => setShowDrawer(!ShowDrawer), [
         ShowDrawer,
@@ -47,8 +49,8 @@ export default () => {
                 play={Playing}
                 src={SRC}
                 setPlaying={setPlaying}
-                currentState={currentTimeState}
-                totalState={totalTimeState}
+               // currentState={currentTimeState}
+               // totalState={totalTimeState}
             />
             <Drawer show={ShowDrawer} toggleDrawer={toggleDrawer}/>
             <AppBar toggleDrawer={toggleDrawer}/>
@@ -59,8 +61,8 @@ export default () => {
                     {
                         playState,
                         srcState,
-                        currentTimeState,
-                        totalTimeState
+                        //       currentTimeState,
+                        //     totalTimeState
                     }
                 }
             />
