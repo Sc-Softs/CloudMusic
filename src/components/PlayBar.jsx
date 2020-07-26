@@ -58,6 +58,7 @@ const RangeSlider =
                     onChange={
                         onChange
                     }
+                    step={0.1}
                     value={value}
                     valueLabelFormat={(v) => `${v}%`}
                     disabled={disabled}
@@ -70,8 +71,9 @@ export default (props) => {
     const styles = useStyle();
     const [Playing, setPlaying] = props.playState;
     const [SRC,] = props.srcState;
-    const [Progress, setProgress] = props.progressState;
-    const [Value, setValue] = React.useState([Progress]);
+    const [CurrentTime, setCurrentTime] = props.currentTimeState;
+    const [TotalTime] = props.totalTimeState;
+    const Value = Math.floor((CurrentTime / TotalTime) * 1000) / 10;
     return (
         <>
 
@@ -112,8 +114,7 @@ export default (props) => {
                     max={100}
                     value={Value}
                     onChange={(e, newValue) => {
-                        setValue(newValue);
-                        setProgress(newValue);
+                        setCurrentTime(TotalTime * newValue / 100);
                     }}
                     disabled={SRC === ""}
                 />

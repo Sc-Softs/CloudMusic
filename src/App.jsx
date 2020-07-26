@@ -7,7 +7,7 @@ import Search from "./pages/search.jsx";
 import PlayList from "./pages/playlist.jsx";
 import Drawer from "./components/Drawer.jsx";
 import Audio from "./components/Audio.jsx";
-import { createPlayList } from "./apis/song";
+import {createPlayList} from "./apis/song";
 
 const router = [
     {
@@ -31,22 +31,38 @@ const redirect = {
 
 export default () => {
     const [ShowDrawer, setShowDrawer] = React.useState(false);
-    var playState, srcState,progressState;
+    var playState, srcState, currentTimeState, totalTimeState;
     var [Playing, setPlaying] = (playState = React.useState(false));
     var [SRC] = (srcState = React.useState(""));
-    progressState = React.useState(0);//0-100
+
+    currentTimeState = React.useState(0);
+    totalTimeState = React.useState(0);
+
     const toggleDrawer = React.useMemo(() => () => setShowDrawer(!ShowDrawer), [
         ShowDrawer,
     ]);
     return (
         <>
-            <Audio play={Playing} src={SRC} setPlaying={setPlaying} progressState={progressState} />
+            <Audio
+                play={Playing}
+                src={SRC}
+                setPlaying={setPlaying}
+                currentState={currentTimeState}
+                totalState={totalTimeState}
+            />
             <Drawer show={ShowDrawer} toggleDrawer={toggleDrawer}/>
             <AppBar toggleDrawer={toggleDrawer}/>
             <Router
                 route={router}
                 redirect={redirect}
-                data={{ playState, srcState,progressState }}
+                data={
+                    {
+                        playState,
+                        srcState,
+                        currentTimeState,
+                        totalTimeState
+                    }
+                }
             />
         </>
     );
